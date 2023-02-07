@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://localhost:6969/technisandwich_db
+    password: motdepassetemporaire4
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
