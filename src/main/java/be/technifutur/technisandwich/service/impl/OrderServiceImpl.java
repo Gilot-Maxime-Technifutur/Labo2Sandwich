@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Set;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -54,6 +55,37 @@ public class OrderServiceImpl implements OrderService {
 
         order.setState("DONE");
         order.setDeliverDate(LocalDateTime.now());
+    }
+
+    @Override
+    public void set(long id, String state) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(RessourceNotFoundException::new);
+
+        order.setState(state.toUpperCase());
+        order.setDeliverDate(LocalDateTime.now());
+    }
+
+    @Override
+    public Set<Order> getAll(String email) {
+        return userRepository.findByUserMail(email)
+                .orElseThrow(RessourceNotFoundException::new)
+                .getOrders();
+    }
+
+    @Override
+    public Order getOne(long id, String email) {
+        return userRepository.findByUserMail(email)
+                .orElseThrow(RessourceNotFoundException::new)
+                .getOrders().stream()
+                .filter(o -> o.getId() == id)
+                .findFirst()
+                .orElseThrow(RessourceNotFoundException::new);
+    }
+
+    @Override
+    public Set<Order> getAll() {
+        return Set.copyOf(orderRepository.findAll());
     }
 
 }

@@ -17,6 +17,8 @@ import java.util.Date;
 @Component
 public class JwtProvider {
     private final UserDetailsService userDetailsService;
+    private final int expireTime = 24*60*60*1000;
+    private final String secret = "ex:b3nj4m1ch35";
 
     public JwtProvider(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -24,14 +26,14 @@ public class JwtProvider {
 
     public String createToken(Authentication auth) {
         Date issuedAt = new Date();
-        Date expiresAt = new Date( System.currentTimeMillis() + (24*60*60*1000) );
+        Date expiresAt = new Date(System.currentTimeMillis() + expireTime);
 
         try {
             return JWT.create()
                     .withSubject( auth.getName() )
                     .withExpiresAt( expiresAt )
                     .withIssuedAt( issuedAt )
-                    .sign( Algorithm.HMAC512("b3j4m1ch35") );
+                    .sign( Algorithm.HMAC512(secret) );
         }
         catch ( UnsupportedEncodingException ex ){
             throw new RuntimeException("internal error", ex);
@@ -40,8 +42,8 @@ public class JwtProvider {
 
     public boolean validateToken(String token){
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC512("b3j4m1ch35"))
-                    .acceptExpiresAt( 24*60*60*1000 )
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC512(secret))
+                    .acceptExpiresAt(expireTime)
                     .build();
 
             DecodedJWT decodedJWT = verifier.verify( token );

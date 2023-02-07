@@ -1,11 +1,12 @@
 package be.technifutur.technisandwich.controller;
 
+import be.technifutur.technisandwich.model.entity.Order;
 import be.technifutur.technisandwich.service.OrderService;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/order")
@@ -23,17 +24,39 @@ public class OrderController {
         return "order-created";
     }
 
-    @PostMapping("/cancel/{id:[0-9]+}")
-    public String cancel(@PathVariable long id){
+    @PostMapping("/cancel}")
+    public String cancel(@RequestParam long id){
         orderService.cancel(id);
 
         return "order-"+id+"-cancelled";
     }
 
-    @PostMapping("/done/{id:[0-9]+}")
-    public String done(@PathVariable long id){
+    @PostMapping("/done}")
+    public String done(@RequestParam long id){
         orderService.done(id);
 
         return "order-"+id+"delivered";
+    }
+
+    @PostMapping("/set")
+    public String done(@RequestParam long id, @RequestParam String state){
+        orderService.set(id, state);
+
+        return "order-"+id+"-"+state;
+    }
+
+    @GetMapping("/view/all")
+    public Set<Order> getAll(Authentication authentication){
+        return orderService.getAll((String) authentication.getPrincipal());
+    }
+
+    @GetMapping("/view/{id:[0-9]+}")
+    public Order getOne(@PathVariable long id, Authentication authentication) {
+        return orderService.getOne(id, (String) authentication.getPrincipal());
+    }
+
+    @GetMapping("/all")
+    public Set<Order> getAll(){
+        return orderService.getAll();
     }
 }

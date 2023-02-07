@@ -39,4 +39,8 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "sandwich_id"))
     private List<Sandwich> sandwiches = new LinkedList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
