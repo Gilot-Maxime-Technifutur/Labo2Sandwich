@@ -22,21 +22,21 @@ public class CartController {
         return cartService.getCart((String) authentication.getPrincipal());
     }
 
-    @PostMapping("/modify")
+    @PatchMapping("/modify")
     public String modify(@RequestParam long id, @RequestParam long qt, Authentication authentication){
         cartService.modify(id, qt, (String) authentication.getPrincipal());
 
         return "modify-succeed";
     }
 
-    @PostMapping("/add")
+    @PatchMapping("/add")
     public String add(@RequestParam long id, @RequestParam long qt, Authentication authentication){
         cartService.add(id, qt, (String) authentication.getPrincipal());
 
         return "add-succeed";
     }
 
-    @PostMapping("/remove")
+    @PatchMapping("/remove")
     public String remove(@RequestParam long id, @RequestParam long qt, Authentication authentication){
         cartService.remove(id, qt, (String) authentication.getPrincipal());
 

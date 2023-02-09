@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void create(String email) {
-        User user = userRepository.findByUserMail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(RessourceNotFoundException::new);
 
         Order order = new Order();
@@ -68,14 +68,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Set<Order> getAll(String email) {
-        return userRepository.findByUserMail(email)
+        return userRepository.findByEmail(email)
                 .orElseThrow(RessourceNotFoundException::new)
                 .getOrders();
     }
 
     @Override
     public Order getOne(long id, String email) {
-        return userRepository.findByUserMail(email)
+        return userRepository.findByEmail(email)
                 .orElseThrow(RessourceNotFoundException::new)
                 .getOrders().stream()
                 .filter(o -> o.getId() == id)
@@ -86,6 +86,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Set<Order> getAll() {
         return Set.copyOf(orderRepository.findAll());
+    }
+
+    @Override
+    public Order getOne(long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(RessourceNotFoundException::new);
     }
 
 }

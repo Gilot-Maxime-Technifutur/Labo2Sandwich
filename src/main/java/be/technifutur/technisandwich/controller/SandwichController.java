@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/sandwich")
@@ -36,11 +35,9 @@ public class SandwichController {
         return sandwichService.getAllWithDiet(diet);
     }
 
-    @PostMapping("/add")
-    public String addToCart(@RequestParam long id, @RequestParam long qt, Authentication authentication) {
+    @PostMapping("/addToCart")
+    public void addToCart(@RequestParam long id, @RequestParam long qt, Authentication authentication) {
         sandwichService.addToCart(id, qt, (String) authentication.getPrincipal());
-
-        return "added-to-cart";
     }
 
     @PostMapping("/add")
@@ -63,7 +60,7 @@ public class SandwichController {
         sandwichService.update( id, mapValues );
     }
 
-    @DeleteMapping({"/{id:[0-9]+}", "/{id:[0-9]+}/delete"})
+    @DeleteMapping("/{id:[0-9]+}/delete")
     public void delete(@PathVariable long id){
         sandwichService.delete(id);
     }

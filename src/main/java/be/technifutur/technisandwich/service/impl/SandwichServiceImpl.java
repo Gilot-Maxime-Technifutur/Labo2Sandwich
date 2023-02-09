@@ -6,7 +6,6 @@ import be.technifutur.technisandwich.model.entity.Cart;
 import be.technifutur.technisandwich.model.entity.Diet;
 import be.technifutur.technisandwich.model.entity.Sandwich;
 import be.technifutur.technisandwich.model.form.SandwichForm;
-import be.technifutur.technisandwich.repository.CartRepository;
 import be.technifutur.technisandwich.repository.DietRepository;
 import be.technifutur.technisandwich.repository.SandwichRepository;
 import be.technifutur.technisandwich.repository.UserRepository;
@@ -53,7 +52,7 @@ public class SandwichServiceImpl implements SandwichService {
         Sandwich sandwich = sandwichRepository.findById(id)
                 .orElseThrow(RessourceNotFoundException::new);
 
-        Cart userCart = userRepository.findByUserMail(email)
+        Cart userCart = userRepository.findByEmail(email)
                 .orElseThrow(RessourceNotFoundException::new)
                 .getCart();
 

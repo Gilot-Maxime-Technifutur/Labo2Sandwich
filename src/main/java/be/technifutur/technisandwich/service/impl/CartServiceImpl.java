@@ -27,7 +27,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCart(String email) {
-        User user = userRepository.findByUserMail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(RessourceNotFoundException::new);
 
         return cartRepository.findById(user.getCart().getId())

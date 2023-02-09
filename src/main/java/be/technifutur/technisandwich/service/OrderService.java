@@ -12,4 +12,5 @@ public interface OrderService {
     Set<Order> getAll(String email);
     Order getOne(long id, String email);
     Set<Order> getAll();
+    Order getOne(long id);
 }

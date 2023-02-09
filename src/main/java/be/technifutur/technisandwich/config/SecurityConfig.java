@@ -33,7 +33,16 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests( (authorize) -> {
             authorize
-                    .anyRequest().permitAll();
+                    .requestMatchers(
+                            "/order/set",
+                            "/*/all",
+                            "/*/one/*",
+                            "/sandwich/add",
+                            "/sandwich/*/update",
+                            "/sandwich/*/delete",
+                            "/user/view/all").hasRole("ADMIN")
+                    .requestMatchers("/auth/*").anonymous()
+                    .anyRequest().authenticated();
         });
 
         return http.build();

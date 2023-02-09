@@ -24,21 +24,21 @@ public class OrderController {
         return "order-created";
     }
 
-    @PostMapping("/cancel}")
+    @PatchMapping("/cancel")
     public String cancel(@RequestParam long id){
         orderService.cancel(id);
 
         return "order-"+id+"-cancelled";
     }
 
-    @PostMapping("/done}")
+    @PatchMapping("/done")
     public String done(@RequestParam long id){
         orderService.done(id);
 
         return "order-"+id+"delivered";
     }
 
-    @PostMapping("/set")
+    @PatchMapping("/set")
     public String done(@RequestParam long id, @RequestParam String state){
         orderService.set(id, state);
 
@@ -58,5 +58,10 @@ public class OrderController {
     @GetMapping("/all")
     public Set<Order> getAll(){
         return orderService.getAll();
+    }
+
+    @GetMapping("/one/{id:[0-9]+}")
+    public Order getOne(@PathVariable long id){
+        return orderService.getOne(id);
     }
 }
